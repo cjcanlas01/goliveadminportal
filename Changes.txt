@@ -1,0 +1,23 @@
+-Added column 'Date' in table 'Users' for admin portal's needs.
+-Delete column 'Time' in the following tables:
+	*RecordRequestRegistries
+	*RequestPackageRegistries
+	*SessionRooms
+-Refracted method for queries that inserts, deletes and such including error handlers. Additionally, added refracted method for selecting data.
+-Added mail component in 'managepackages.php' for sending order summary.
+---------------------------------------------------------------
+-Generate invoice code when user's top up request has been approve.
+-Add column 'description' in table 'PackageTypes'.
+-Add session count, if it reach the time limit, cancel method and revert changes.
+
+02-14-2019 - 2:09AM
+-Added delete button in user account approval and package lists.
+	FILES CHANGED:
+		*accountregistry.php
+		*managepackages.php
+		*accountregistry.js
+		*managepackages.js
+
+NEED CHANGE
+-Admin account cannot delete an account record when logged in.
+		
