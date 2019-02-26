@@ -52,14 +52,18 @@ class PDF extends FPDF {
 		$this->Ln();
 
 		$dateVar = ''; $str = '';
-		if ($dataVars['varTable'] == 'RecordRequestRegistries') {
-			if ($dataVars['varYearA'] != '' && $dataVars['varYearB'] != '') {
-				$str = "SELECT $dataVars[varDataA] as A, $dataVars[varDataB] as B, $dataVars[varDataC] as C, $dataVars[varDataD] as D, DATE($dataVars[varDataE]) as E FROM $dataVars[varTable] WHERE DATE(Date) BETWEEN '$dataVars[varYearA]' AND '$dataVars[varYearB]'";
+		if ($dataVars['varFilter'] != '') {
+			switch($dataVars['varFilter']) {
+				case 'approved':		
+				$str = "SELECT $dataVars[varDataA] as A, $dataVars[varDataB] as B, $dataVars[varDataC] as C, $dataVars[varDataD] as D, DATE($dataVars[varDataE]) as E FROM RecordRequestRegistries WHERE DATE(Date) BETWEEN '$dataVars[varYearA]' AND '$dataVars[varYearB]'";
+				break;
+
+				case 'pending':
+					$str = "SELECT $dataVars[varDataA] as A, $dataVars[varDataB] as B, $dataVars[varDataC] as C, $dataVars[varDataD] as D, DATE($dataVars[varDataE]) as E FROM RequestPackageRegistries WHERE DATE(Date) BETWEEN '$dataVars[varYearA]' AND '$dataVars[varYearB]'";
+				break;
 			}
 		} else {
-			if ($dataVars['varYearA'] != '' && $dataVars['varYearB'] != '') {
-				$str = "SELECT $dataVars[varDataA] as A, $dataVars[varDataB] as B, $dataVars[varDataC] as C, $dataVars[varDataD] as D, DATE($dataVars[varDataE]) as E FROM $dataVars[varTable] WHERE DateCreated BETWEEN '$dataVars[varYearA]' AND '$dataVars[varYearB]' AND Role <> 'admin'";
-			}
+			$str = "SELECT $dataVars[varDataA] as A, $dataVars[varDataB] as B, $dataVars[varDataC] as C, $dataVars[varDataD] as D, DATE($dataVars[varDataE]) as E FROM $dataVars[varTable] WHERE DateCreated BETWEEN '$dataVars[varYearA]' AND '$dataVars[varYearB]' AND Role <> 'admin'";
 		}
 		$query = $conn->query($str);
 		$computed_val = 0;
@@ -104,13 +108,14 @@ if (isset($_GET['yearA']) && isset($_GET['yearB']) && isset($_GET['indicator']))
 	$yearA = $_GET['yearA'];
 	$yearB = $_GET['yearB'];
 	$indicator = $_GET['indicator'];
+	$filter = $_GET['filter'];
 
 	switch ($indicator) {
 		case 'userlist':
 			genPDF_UL_Body($yearA, $yearB);
 			break;
 		case 'packagesummary':
-			genPDF_PS_Body($yearA, $yearB);
+			genPDF_PS_Body($yearA, $yearB, $filter);
 			break;
 	}
 }
@@ -124,6 +129,7 @@ function genPDF_UL_Body($yearA, $yearB) {
 	$varData['varTable'] = 'Users';
 	$varData['varYearA'] = $yearA;
 	$varData['varYearB'] = $yearB;
+	$varData['varFilter'] = '';
 
 	$varData['varNameA'] = 'Email';
 	$varData['varNameB'] = 'Business Name';
@@ -144,15 +150,16 @@ function genPDF_UL_Body($yearA, $yearB) {
 	$generatePDF->Output('I', $fileName);
 }
 
-function genPDF_PS_Body($yearA, $yearB) {
+function genPDF_PS_Body($yearA, $yearB, $filter) {
 	$varData = array(); //array storage for variable datas
 	$generatePDF = new PDF();
 	$generatePDF->AliasNbPages();
 	$generatePDF->AddPage('P', 'A4', 0);
-	$varData['varTitle'] = 'PACKAGE REQUESTS REPORT'; //choices: USERS LIST REPORT or REQUESTS SUMMARY REPORT
+	$varData['varTitle'] = strtoupper($filter).' PACKAGE REQUESTS REPORT'; //choices: USERS LIST REPORT or REQUESTS SUMMARY REPORT
 	$varData['varTable'] = 'RecordRequestRegistries'; //sets table name
 	$varData['varYearA'] = $yearA;
 	$varData['varYearB'] = $yearB;
+	$varData['varFilter'] = $filter;
 
 	$varData['varNameA'] = 'Email'; //sets name for columns
 	$varData['varNameB'] = 'Package Name';

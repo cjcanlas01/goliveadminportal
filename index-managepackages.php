@@ -129,6 +129,55 @@
                 </div>
             </div>
 
+            <!-- Modal for viewing package details of user package request -->
+            <div class="modal fade" id="mp-package-details" tabindex="-1" role="dialog" aria-labelledby="mp-im-label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mp-pd-label">Package Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="mp-pd-body">
+                            <div class="row" style="padding: 10px;">
+                                <p>O.R. No:</p>
+                                <input class="form-control" id="or-no" type="text">
+                            </div>
+                            <div class="" style="padding: 10px;">
+                                <p><b>Business Name:</b></p>
+                                <label id="busi-name"></label>
+                                <!-- <input class="form-control" type="text"> -->
+                            </div>
+                            <div class="" style="padding: 10px;">
+                                <p><b>Package Request</b></p>
+                                <!-- <p>Business Name: <p id="busi-type"></p></p> -->
+                                <table width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td style="width: 30%;"><b>Package Type</b></td>
+                                            <td style="width: 40%;"><b>Duration (Minutes)</b></td>
+                                            <td><b>Price</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="package-type"></td>
+                                            <td id="duration-min"></td>
+                                            <td id="price-details"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="mp-pd-confirm" data-toggle='modal' data-target='#mp-confirmmodal' class="btn btn-primary">Approve</button> <!-- Change ID -->
+                            <button class="btn btn-secondary"  data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- BASA!!!: Modal for Customizing and Adding a Package -->
             <div class="modal fade" id="mp-inputmodal" tabindex="-1" role="dialog" aria-labelledby="mp-im-label" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -159,7 +208,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  
 
             <script src="js/jquery-3.3.1.min.js"></script>
             <script src="js/bootstrap.min.js"></script>

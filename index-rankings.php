@@ -75,7 +75,16 @@
                     </div>
                     <br />
                     <div class="centerVal">
-                        <table border="0" style="width: 700px;" id="SubsRankContainer">
+                        <table border="0" style="width: 700px;">
+                            <thead>
+                                <tr>
+                                    <td style="text-align: center;"><b>Email Address</b></td>
+                                    <td></td>
+                                    <td style="text-align: center;"><b>Count</b></td>
+                                </tr>
+                            </thead>
+                            <tbody id="SubsRankContainer">
+                            </tbody>
                         </table>  
                     </div>
                 </div>
@@ -101,7 +110,16 @@
                     </div>
                     <br />
                     <div class="centerVal">
-                        <table border="0" style="width: 700px;" id="ViewsRankContainer">
+                        <table border="0" style="width: 700px;">
+                            <thead>
+                                <tr>
+                                    <td style="text-align: center;"><b>Email Address</b></td>
+                                    <td></td>
+                                    <td style="text-align: center;"><b>Count</b></td>
+                                </tr>
+                            </thead>
+                            <tbody id="ViewsRankContainer">
+                            </tbody>
                         </table>  
                     </div>
                 </div>
@@ -127,7 +145,16 @@
                     </div>
                     <br />
                     <div class="centerVal">
-                        <table border="0" style="width: 700px;" id="RatesRankContainer">
+                        <table border="0" style="width: 700px;">
+                            <thead>
+                                <tr>
+                                    <td style="text-align: center;"><b>Email Address</b></td>
+                                    <td></td>
+                                    <td style="text-align: center;"><b>Count</b></td>
+                                </tr>
+                            </thead>
+                            <tbody id="RatesRankContainer">
+                            </tbody>
                         </table>  
                     </div>
                 </div>

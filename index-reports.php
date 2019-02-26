@@ -43,8 +43,8 @@
                 </button>
                 <button class="tablinks res" onclick="openTab(event, 'PackageRequest')"><b>PACKAGE REQUESTS</b>
                 </button>
-                <button class="tablinks res" onclick="openTab(event, 'DataExports')"><b>DATA EXPORTS</b>
-                </button>
+<!--                 <button class="tablinks res" onclick="openTab(event, 'DataExports')"><b>DATA EXPORTS</b>
+                </button> -->
             </div>
 
          	<!-- Tab content -->
@@ -68,9 +68,15 @@
             <div id="PackageRequest" class="tabcontent">
                 <div style="background-color: white; padding: 15px 15px 15px 15px;">
                     <div class="row">
-                        <div class="col-10-md" style="padding: 5px 5px 5px 5px;">
+                        <div class="col-8-md" style="padding: 5px 5px 5px 5px;">
                             <input class="form-control" type="text" name="daterange" id="in-pr-r-dr" style="width: 300px;"/>
                         </div> 
+                        <div class="col-2-md" style="padding: 15px;">
+                            <input type="radio" name="filter" value="approved" checked>
+                            <label>Approved</label>
+                            <input type="radio" name="filter" value="pending">
+                            <label>Pending</label>
+                        </div>        
                         <div class="col-2-md">
                             <button class="btn btn-primary form-control" id="btn-pr-r-generate" style="font-size: 15px; margin-top: 5px;">GENERATE</button>
                         </div>          
@@ -144,6 +150,7 @@
         <script src="js/sweetalert2.all.min.js"></script>
         <script src="js/moment.min.js"></script>
         <script src="js/daterangepicker.js"></script>
+        <script src="js/sweetalert2.all.min.js"></script>
 		<script src="js/reports.js"></script>
 </body>
 

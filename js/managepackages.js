@@ -52,7 +52,23 @@ $(document).ready(function() {
               } },
             { data: "Id" }
         ],
-        "columnDefs": [{
+        "columnDefs": [
+            {
+                "targets": [2],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [3],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [4],
+                "visible": false,
+                "searchable": false
+            }
+            ,{
                 "targets": [5],
                 "visible": false,
                 "searchable": false
@@ -60,7 +76,7 @@ $(document).ready(function() {
             {
                 "targets": [6],
                 "searchable": false,
-                "defaultContent": "<span class='btn btn-primary fa fa-check confirm' style='height: 30px; width: 50px;' id='approve_request' data-toggle='modal' data-target='#mp-confirmmodal'></span><span class='btn btn-primary fa fa-times' style='height: 30px; width: 50px;' id='delete_request' data-toggle='modal' data-target='#mp-confirmmodal'></span>"
+                "defaultContent": "<span class='btn btn-primary fa fa-check confirm' style='height: 30px; width: 50px;' id='approve_request' data-toggle='modal' data-target='#mp-package-details'></span><span class='btn btn-primary fa fa-times' style='height: 30px; width: 50px;' id='delete_request' data-toggle='modal' data-target='#mp-confirmmodal'></span>"
             }
         ]
     });
@@ -126,7 +142,12 @@ $(document).ready(function() {
 
     $('#mp-cm-confirm').click(function() { //for package deletion and approval of requests
         if($(this).data('action') == 'approve') {
-            transfer_data($(this).attr('id'), payload, '#mp-confirmmodal', requests);
+            if($('#or-no').val() != '') {
+                transfer_data($(this).attr('id'), payload, '#mp-confirmmodal', requests);
+                $('.modal').modal('hide');
+            } else {
+                msg_response('false', 'Please enter an O.R. number!');
+            }
         } else if($(this).data('action') == 'delete') {
             transfer_data($(this).attr('id'), payload, '#mp-confirmmodal', requests);
         } else if($(this).data('action') == 'deletepackage') {
@@ -162,9 +183,17 @@ $(document).ready(function() {
     $('#requests tbody').on('click', 'span', function() { //working - data application for approving requests
         var id = $(this).attr('id');
         if(id == 'approve_request') {
-            payload['id'] = requests.row($(this).closest('tr')).data()['Id'];
-            payload['email'] = requests.row($(this).closest('tr')).data()['Email'];
-            $('#mp-cm-confirm').data('action', 'approve');
+            $('#busi-name').html('');
+            $('#package-type').html('');
+            $('#duration-min').html('');
+            $('#price-details').html('');
+            $('#or-no').val('');
+            $('#busi-name').html(requests.row($(this).closest('tr')).data()['BusinessName']);
+            $('#package-type').html(requests.row($(this).closest('tr')).data()['PackageName']);
+            $('#duration-min').html(requests.row($(this).closest('tr')).data()['Duration']);
+            $('#price-details').html(requests.row($(this).closest('tr')).data()['Price']);
+            $(this).data('id', requests.row($(this).closest('tr')).data()['Id']);
+            $(this).data('email', requests.row($(this).closest('tr')).data()['Email']);
         } else if(id == 'delete_request') {
             payload['id'] = requests.row($(this).closest('tr')).data()['Id'];
             $('#mp-cm-confirm').data('action', 'delete');
@@ -187,7 +216,23 @@ $(document).ready(function() {
         }
     });
 
+    $('#mp-pd-confirm').click(function() {
+        payload['id'] = $('#approve_request').data('id');
+        payload['email'] = $('#approve_request').data('email');
+        payload['or-no'] = $('#or-no').val();
+        $('#mp-cm-confirm').data('action', 'approve');
+    });
+
     function maskColumnNum(value){
       return "PHP " + accounting.formatNumber(value, 2);
     }
+
+    $(document).on('show.bs.modal', '.modal', function () {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    })
+
 });

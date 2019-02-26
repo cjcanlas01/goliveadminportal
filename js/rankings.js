@@ -113,14 +113,17 @@ $(document).ready(function() {
             },
             success: function(data) { 
                 $(newId).html('');
-                for(var i=0; i<data.length; i++) {
-                    if(data[i]['User'] == null || data[i]['User'] == '') {
-                        // $(newId).append('<div class="row centerVal"><p style="font-size: 22px;"><b>'+ (i+1) +'.</b> Empty Slot - 0<p></div>');
+                if(data.length != 5) {
+                    for(var i=0; i<5; i++) {
+                        if(data[i] == null || data[i] == '' || data[i]['User'] == null) {
+                            $(newId).append('<tr><td style="width: 40%;">'+ (i+1) +'. Empty Slot</td><td style="width: 20%; text-align: center;"> - </td><td style="width: 40%; text-align: center;"> 0 </td></tr>');
+                        } else {
+                            $(newId).append('<tr><td style="width: 40%;">'+ (i+1) +'. '+ data[i]['User'] +'</td><td style="width: 20%; text-align: center;"> - </td><td style="width: 40%; text-align: center;"> '+ data[i]['Count'] +' </td></tr>');  
+                        }
+                    }
+                } else {
+                    for(var i=0; i<data.length; i++) {
                         $(newId).append('<tr><td style="width: 40%;">'+ (i+1) +'. Empty Slot</td><td style="width: 20%; text-align: center;"> - </td><td style="width: 40%; text-align: center;"> 0 </td></tr>');
-
-                    } else {
-                        // $(newId).append('<div class="row centerVal"><p style="font-size: 22px;"><b>'+ (i+1) +'.</b> '+ data[i]['User'] +' - '+ data[i]['Count'] +'<p></div>');
-                        $(newId).append('<tr><td style="width: 40%;">'+ (i+1) +'. '+ data[i]['User'] +'</td><td style="width: 20%; text-align: center;"> - </td><td style="width: 40%; text-align: center;"> '+ data[i]['Count'] +' </td></tr>');
                     }
                 }
                 Swal.close();

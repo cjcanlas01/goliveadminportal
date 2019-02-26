@@ -3,7 +3,7 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
-    function receipt_mail($order_content) {
+    function receipt_mail($order_content, $or_no) {
         $bodymsg = '';
         $bodymsg .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
         $bodymsg .= '<html xmlns="http://www.w3.org/1999/xhtml">';
@@ -34,6 +34,8 @@
         $bodymsg .= '<td style="padding: 10px 5px 0px 20px;">';
         $bodymsg .= '<b style="font-size: 17px;">STATUS:</b>';
         $bodymsg .= '<p id="uncurdate" style="font-size: 15px;">&emsp;APPROVED</p>';
+        $bodymsg .= '<b style="font-size: 17px;">O.R. No.:</b>';
+        $bodymsg .= '<p id="uncurdate" style="font-size: 15px;">&emsp;'.$or_no.'</p>';
         $bodymsg .= '<b style="font-size: 17px;">DATE:</b>';
         $bodymsg .= '<p id="uncurdate" style="font-size: 15px;">&emsp;'.date('F d, Y').'</p>';
         $bodymsg .= '<p>&emsp;Below are the transacted item(s) to your account. This serves as a official copy of your package order.</p>';

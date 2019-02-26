@@ -24,28 +24,41 @@ function openTab(evt, tabName) {
 //test code v1
 var dispBlock = '';
 $('#btn-ul-r-generate').click(function() {
+    resPDF();
     var startDate = $('#in-ul-r-dr').data('daterangepicker').startDate.format('YYYY-MM-DD');
     var endDate =  $('#in-ul-r-dr').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
     if (startDate != null && endDate != null) {
-        $('#s-ul-r-pdf-obj').attr('data', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate +'&indicator=userlist');
-        $('#sT-ul-r-pdf-obj').attr('src', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate +'&indicator=userlist');
+        $('#s-ul-r-pdf-obj').attr('data', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate +'&indicator=userlist&filter=');
+        $('#sT-ul-r-pdf-obj').attr('src', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate +'&indicator=userlist&filter=');
     }        
     textPopUp();
     dispBlock = 'ul';
 });
 
+var filterData = '';
 $('#btn-pr-r-generate').click(function() {
+    resPDF(); 
     var startDate = $('#in-pr-r-dr').data('daterangepicker').startDate.format('YYYY-MM-DD');
     var endDate =  $('#in-pr-r-dr').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
+    if($("input[name='filter'][value='approved']").is(":checked")) {
+        filterData = 'approved';
+    } else {
+        filterData = 'pending';
+    }
+
     if (startDate != null && endDate != null) {
-        $('#s-pr-r-pdf-obj').attr('data', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate  +'&indicator=packagesummary');
-        $('#sT-pr-r-pdf-obj').attr('src', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate  +'&indicator=packagesummary');
+        $('#s-pr-r-pdf-obj').attr('data', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate  +'&indicator=packagesummary&filter='+filterData+'');
+        $('#sT-pr-r-pdf-obj').attr('src', 'php/generatepdf.php?yearA='+ startDate +'&yearB='+ endDate  +'&indicator=packagesummary&filter='+filterData+'');
     }
     textPopUp();
     dispBlock = 'pr';
 });
+
+// $("input[name='filter']").change(function() {
+//     filterData = $(this).val();
+// });
 
 function textPopUp() {
     Swal({ //for popup
@@ -64,6 +77,10 @@ function textPopUp() {
 }
 
 $('.tablinks').click(function() {
+    resPDF();
+});
+
+function resPDF() {
     $('#s-ul-r-pdf-obj').css('display', 'none');
     $('#s-ul-r-pdf-obj').attr('data', '');
     $('#sT-ul-r-pdf-obj').attr('src', '');
@@ -71,10 +88,23 @@ $('.tablinks').click(function() {
     $('#s-pr-r-pdf-obj').css('display', 'none');
     $('#s-pr-r-pdf-obj').attr('data', '');
     $('#sT-pr-r-pdf-obj').attr('src', '');
-});
+}
 
 $('input[name="daterange"]').daterangepicker({
     opens: 'right',
     drops: 'down',
     autoApply: true,
 });
+
+$(document).on('click', 'span', function() {
+    //for getting value - $(this).html();
+    console.log($(this).closest('tr').find('td').html());
+});
+
+function msg_response(indicator, msg) { //method for response
+    if (indicator == 'true') {
+        Swal({ type: 'success', title: msg, timer: 1800})
+    } else {
+        Swal({ type: 'warning', title: msg, timer: 1800})
+    }
+}  

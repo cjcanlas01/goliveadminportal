@@ -93,7 +93,7 @@ $(document).ready(function(){
 			type: "post",
 			data: {
 				accountaction: $('#' + parentid).data('accountaction'),
-				payload: payload
+				payload: payloaddata
 			},
 			dataType: "json",
 			beforeSend: function() {
@@ -103,7 +103,10 @@ $(document).ready(function(){
 				msg_response(data['indicator'], data['msg']);
 				$(modalid).modal('hide');
 				tableid.ajax.reload();
-			}
+			},
+			error: function(data){
+		        alert(data);
+		    }
 		})
 	}
 

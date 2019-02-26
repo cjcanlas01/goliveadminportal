@@ -13,8 +13,9 @@
 			case 'approve':
 				$id = $_POST['payload']['id'];
 				$email = $_POST['payload']['email'];
+				$or_no = $_POST['payload']['or-no'];
 
-				$result = $conn->query("SELECT RP.Email, RP.BusinessName, RP.Id, SR.Status, RP.PackageName, RP.Duration, RP.Price, RP.VoucherNumber, UPM.TimeRemaining FROM RequestPackageRegistries as RP INNER JOIN UserPackageMappings AS UPM ON RP.Email=UPM.Email INNER JOIN SessionRooms as SR ON RP.Email=SR.Email WHERE RP.Id = '$id'");
+				$result = $conn->query("SELECT RP.Email, RP.BusinessName, RP.Id, SR.Status, RP.PackageName, RP.Duration, RP.Price, UPM.TimeRemaining FROM RequestPackageRegistries as RP INNER JOIN UserPackageMappings AS UPM ON RP.Email=UPM.Email INNER JOIN SessionRooms as SR ON RP.Email=SR.Email WHERE RP.Id = '$id'");
 
 				if (mysqli_num_rows($result) == 1) {
 					while($row = $result->fetch_assoc()) {
@@ -24,21 +25,20 @@
 							$packagename = $row['PackageName'];
 							$duration = $row['Duration'];
 							$price = $row['Price'];
-							$vouchernumber = $row['VoucherNumber'];
 
 			        		$time = (int) $row['TimeRemaining'] + (int) $row['Duration']; // computation for adding the approved top up requests
 
 			        		$arr_query[0] = $conn->query("UPDATE UserPackageMappings SET TimeRemaining = '$time' WHERE Email = '$email'");
 			        		$connection[0] = mysqli_error($conn);
-			        		$arr_query[1] = $conn->query("INSERT INTO RecordRequestRegistries (Email, BusinessName, PackageName, Duration, Price, Time, Date, VoucherNumber) VALUES ('$email', '$bname', '$packagename', '$duration', '$price', '$gen_date', '$gen_date', '$vouchernumber')");
+			        		$arr_query[1] = $conn->query("INSERT INTO RecordRequestRegistries (Email, BusinessName, PackageName, Duration, Price, Time, Date, VoucherNumber) VALUES ('$email', '$bname', '$packagename', '$duration', '$price', '$gen_date', '$gen_date', '$or_no')");
 			        		$connection[1] = mysqli_error($conn);
 			        		$arr_query[2]  = $conn->query("DELETE FROM RequestPackageRegistries WHERE Id = '$id'");
 			        		$connection[2] = mysqli_error($conn);
 
 			        		$order_sum = [$packagename, $duration, $price];
 
-			        		$arr_query[3] = email_handler($email, 'GoLive: Order Summary', receipt_mail($order_sum));
-
+			        		$arr_query[3] = email_handler($email, 'GoLive: Order Summary', receipt_mail($order_sum, $or_no));
+			        		
 			        		$response['msg_a'] = 'Request approval successful.';
 			        		$response['msg_b'] = 'Request approval unsuccessful.';
 			        		msg_response($arr_query, $response, $connection);
